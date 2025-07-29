@@ -146,7 +146,7 @@ The above scale is **subject to change** when I determine the final grades. So p
 
 - Check Canvas and your student email daily
 - Live sessions in this class will be recorded and available on Canvas
-- Please inform me in advance if you're unable to make it to a class session. If you have a valid reason I'll excuse you from the quiz for that day. There is no option to do a make up quiz.
+- Please inform me in advance if you're unable to make it to a class session. If you have a valid reason I'll excuse you from the quiz for that day or offer a make up option during office hours.
 - Please inform me in advance if you won't be able to submit your assignment by the deadline. If you have a valid reason I'll excuse you from that assignment. There is no option to obtain an extension.
 - Absences and Accommodations for Faith and Conscience
 
@@ -211,4 +211,4 @@ Visit www.LWTech.edu/StudentSupportResources for more information on each of the
 - TRiO
 - Tutoring
 - Veteran Services
- 
+
