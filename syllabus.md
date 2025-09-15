@@ -14,11 +14,11 @@ Lake Washington Institute of Technology
 - Class location: **Technology Center Room T221**
 - Last Day to Withdraw from Classes: Wednesday, November 26
 - No class sessions on the following non-academic days:
-  - Monday, October 13 (Instruction Inservice Day)
   - Wednesday, November 5 (Advising Day)
+  - Monday, November 10 (Instruction Inservice Day)
   - Tuesday, November 11 (Holiday)
   - Thursday-Saturday, November 27-29 (Holiday)
-
+  
 ## Contact Information
 
 - **Dr. Vishesh Khemani** 
@@ -104,9 +104,9 @@ Contact me if you have questions or cannot currently meet the technology require
 
 There are **no required textbooks** for this class. However, if you want to go deeper into some topics, I recommend the following books:
 
-| Title                                            | Authors                | Edition | ISBN-10    | ISBN-13         | Publisher         | Year |
-|:-------------------------------------------------|:----------------------|:-------|:-----------|:----------------|:------------------|:-----|
-| Database Systems: Design, Implementation & Management | Carlos Coronel, Steven Morris | 14th   | 0357673034 | 978-0357673034   | Cengage Learning  | 2023 |
+| Title                                                 | Authors                       | Edition | ISBN-10    | ISBN-13        | Publisher        | Year |
+| :---------------------------------------------------- | :---------------------------- | :------ | :--------- | :------------- | :--------------- | :--- |
+| Database Systems: Design, Implementation & Management | Carlos Coronel, Steven Morris | 14th    | 0357673034 | 978-0357673034 | Cengage Learning | 2023 |
 
 Textbook(s) available for purchase in the LWTech bookstore or online at www.lwtechshop.com. The bookstore will be open for walk-in customers and online ordering.  If ordering on the website, students can choose to pick up their order in store, or they can have their order shipped to them for an additional fee. bookstore (LWTech.edu/Bookstore). 
 
