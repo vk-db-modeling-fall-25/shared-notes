@@ -146,12 +146,12 @@ Solution:
 
 **Order Line Items**:
 
-| Order ID (PK) | Product ID (PK) | Price   | Quantity |
-| ------------- | --------------- | ------- | -------- |
-| 1001          | 201             | $999.99 | 1        |
-| 1001          | 202             | $29.99  | 2        |
-| 1002          | 203             | $79.99  | 1        |
-| 1003          | 204             | $299.99 | 1        |
+| Order ID (PK, FK) | Product ID (PK, FK) | Price   | Quantity |
+| ----------------- | ------------------- | ------- | -------- |
+| 1001              | 201                 | $999.99 | 1        |
+| 1001              | 202                 | $29.99  | 2        |
+| 1002              | 203                 | $79.99  | 1        |
+| 1003              | 204                 | $299.99 | 1        |
 
 - What has 2NF achieved?
   - Full Product info duplication has been reduced to only Product ID duplication
@@ -191,12 +191,12 @@ Make new tables to eliminate *transitive dependencies*
 
 **Orders**:
 
-| Order ID (PK) | Customer ID | Order Date |
-| ------------- | ----------- | ---------- |
-| 1001          | 501         | 2024-01-15 |
-| 1001          | 501         | 2024-01-15 |
-| 1002          | 502         | 2024-01-16 |
-| 1003          | 501         | 2024-01-17 |
+| Order ID (PK) | Customer ID (FK) | Order Date |
+| ------------- | ---------------- | ---------- |
+| 1001          | 501              | 2024-01-15 |
+| 1001          | 501              | 2024-01-15 |
+| 1002          | 502              | 2024-01-16 |
+| 1003          | 501              | 2024-01-17 |
 
 
 
@@ -213,12 +213,12 @@ Make new tables to eliminate *transitive dependencies*
 
 **Order Line Items**:
 
-| Order ID (PK) | Product ID (PK) | Price   | Quantity |
-| ------------- | --------------- | ------- | -------- |
-| 1001          | 201             | $999.99 | 1        |
-| 1001          | 202             | $29.99  | 2        |
-| 1002          | 203             | $79.99  | 1        |
-| 1003          | 204             | $299.99 | 1        |
+| Order ID (PK, FK) | Product ID (PK, FK) | Price   | Quantity |
+| ----------------- | ------------------- | ------- | -------- |
+| 1001              | 201                 | $999.99 | 1        |
+| 1001              | 202                 | $29.99  | 2        |
+| 1002              | 203                 | $79.99  | 1        |
+| 1003              | 204                 | $299.99 | 1        |
 
 - What has 2NF achieved?
   - Full customer info duplication has been reduced to only Customer ID duplication
