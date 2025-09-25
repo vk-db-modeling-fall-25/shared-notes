@@ -7,3 +7,9 @@
    2. More on Relational Data Modeling ([notes](more-relational.md))
    3. Case Study ([notes](erd-case-study.md))
 
+
+---
+
+- College-wide learning outcome: Communication
+  - [Notes](./communication.md)
+  - [Slides](./communication-slides.pdf)
