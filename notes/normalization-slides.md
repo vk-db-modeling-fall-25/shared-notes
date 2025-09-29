@@ -12,6 +12,47 @@ style: |
   .cols h2 {
     margin-top: 0;
   }
+  /* Global compact typography */
+  section.compact {
+      font-size: 1.5em;      /* Slightly smaller overall */
+      line-height: 1.25;      /* Tighter vertical rhythm */
+      letter-spacing: -0.005em; /* Slightly tighter tracking; keep subtle for readability */
+  }
+
+  /* Headings */
+  section.compact h1 { font-size: 1.6em; line-height: 1.1; margin: 0 0 0.35em; letter-spacing: -0.02em; }
+  section.compact h2 { font-size: 1.35em; line-height: 1.15; margin: 0 0 0.3em;  letter-spacing: -0.015em; }
+  section.compact h3 { font-size: 1.15em; line-height: 1.2;  margin: 0 0 0.25em; letter-spacing: -0.01em; }
+
+  /* Paragraphs and lists */
+  section.compact p { margin: 0.25em 0; }
+  section.compact ul, section ol { margin: 0.35em 0 0.35em 1.1em; }
+  section.compact li { margin: 0.1em 0; }
+
+  /* Code */
+  section.compact code, section pre, section pre code {
+      font-size: 0.85em;
+      line-height: 1.2;
+      white-space: pre-wrap;
+      word-break: break-word;
+  }
+
+  /* Tables (pairs with your earlier compact table setup) */
+  section.compact table {
+      table-layout: fixed;
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.9em;
+  }
+  section.compact th, section td {
+      padding: 0.3em 0.5em;
+      line-height: 1.2;
+      word-break: break-word;
+      overflow-wrap: anywhere;
+      hyphens: auto;
+  }
+
+
 ---
 
 # Database Normalization
@@ -92,9 +133,9 @@ Each stage is called a **normal form**
 
 ---
 
-# Converting to 1NF: Example
+<!-- _class: compact -->
 
-<style scoped>section {font-size: 1.8em}</style>
+# Converting to 1NF: Example
 
 **Before:**
 | Order ID | Customer ID | Customer Name  | All Product IDs | All Product Names | All Quantities |
@@ -139,7 +180,7 @@ Answer: (Order ID, Product ID)
 
 ---
 
-<style scoped>section {font-size: 1.8em}</style>
+<!-- _class: compact -->
 
 # Types of Dependencies
 
@@ -186,7 +227,7 @@ List the following:
 ---
 # Converting to 2NF: Example
 
-<style scoped>section {font-size: 1em}</style>
+<!-- _class: compact -->
 
 **1NF:**
 
@@ -254,7 +295,7 @@ Modified 1NF table: Order Line Items
 
 # Converting to 3NF: Example
 
-<style scoped>section {font-size: 1.5em}</style>
+<!-- _class: compact -->
 
 **2NF:**
 
@@ -294,13 +335,13 @@ Modified 1NF table: Order Line Items
 </tr>
 </table>
 
-## Do any of the above tables have any transitive dependecies?
+## Do any of the above tables have any transitive dependencies?
 
 ---
 
 # Converting to 3NF: Example (contd)
 
-<style scoped>section {font-size: 1.6em}</style>
+<!-- _class: compact -->
 
 <div class="cols">
 <div>
@@ -356,7 +397,7 @@ Orders:
 
 # Final Result: 3NF Database
 
-<style scoped>section {font-size: 1.2em}</style>
+<!-- _class: compact -->
 
 **Unnormalized:**
 | Order ID | Customer ID | Customer Name  | All Product IDs | All Product Names | All Quantities |
