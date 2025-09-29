@@ -30,7 +30,7 @@ This is the same file we saw before (in [Why Databases](./why-databases.md)) exc
 
 Main problem:
 
-- Non-atomic (multi-valued) data is some fields
+- Non-atomic (multi-valued) data in some fields
   - So hard to query for one item in a multi-valued field e.g. all orders with laptops
   - Need to maintain the positional structure of the multi-valued fields in the presence of mutations
 
@@ -55,7 +55,7 @@ Solution:
 
     - What's a PK?
 
-      > A field/attribute (or an irreducible set of fields/attributes) that unique identifies each row/record
+      > A field/attribute (or an irreducible set of fields/attributes) that uniquely identifies each row/record
 
     - What's a PK in the above table?
       - (Order ID, Product ID)
@@ -79,7 +79,7 @@ Solution:
 
 - What is functional dependence?
 
-  > The field/attribute B is functionally dependent on the field/attribute A if each value of A determines one and only one
+  > The fields/attributes B are functionally dependent on the fields/attributes A if each value of A determines exactly one value of B
 
   - e.g. Product Name is functionally dependent on Product ID
     - Notation: **Product ID -> Product Name**
@@ -91,7 +91,7 @@ Solution:
 
 - **Full functional dependence**
 
-  - A functional dependence in which all the fields/attributes in the determinant are neceassry to identify the dependent
+  - A functional dependence in which all the fields/attributes in the determinant are necessary to identify the dependent
   - Which attributes have full functional dependence on the PK in the example?
     - (Order ID, Product ID) -> (Price, Quantity)
 
@@ -110,7 +110,7 @@ Solution:
     - Detail: non-key means not a PK nor any other candidate PK (we'll learn later about candidate keys)
   - Transitive because PK -> A and A -> B
   - Transitive dependencies in the above table?
-    - Customer ID -> (Customer Name, Custimer Email, Customer City)
+    - Customer ID -> (Customer Name, Customer Email, Customer City)
 
 ## Conversion to 2NF
 
