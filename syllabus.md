@@ -30,7 +30,9 @@ Lake Washington Institute of Technology
 - My work hours are typically 9a to 5p M-F and I usually respond to emails within 1 working day
   - If you don't hear back from me within a day, something's wrong, so please ping me again or see me in class
 - You can meet with me either by attending my office hours (in-person) or by emailing me some times that work for you for a Teams meeting
-  - **Office hours: Mo and We 4p - 5p in W403**  
+  - **Office hours:**
+    - **Mo 5p - 6p in T221**
+    - **We 5p - 6p in W403**  
 
 ## Course Description 
 
