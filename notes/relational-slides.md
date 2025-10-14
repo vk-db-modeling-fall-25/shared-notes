@@ -23,7 +23,7 @@ style: |
       table-layout: fixed;
       width: 100%;
       border-collapse: collapse;
-      font-size: 0.9em;
+      font-size: 0.7em;
   }
   section.compact th, section td {
       padding: 0.3em 0.5em;
@@ -586,7 +586,7 @@ Given these tables:
 **Questions:**
 1. Identify all PKs and FKs
 2. Check entity and referential integrity
-3. Describe relationships
+3. Draw a crow's foot ERD showing the entity relationships
 
 ---
 
