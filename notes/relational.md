@@ -297,7 +297,7 @@ erDiagram
   | 1005             | The Potato Eaters |
 
 
-- If Painter (the "1" side) had a FK to Painting (the "many" side) then it would have to store multiple FKs for one painter => redundantly storing the painter
+- If Painter (the "1" side) had a FK to Painting (the "many" side)
 
   | PAINTER_ID (PK) | PAINTER_LNAME | PAINTING_ID (FK) ❌ |
   | --------------- | ------------- | ------------------ |
@@ -306,6 +306,11 @@ erDiagram
   | 101             | Van Gogh      | 1005               |
   | 102             | Picasso       | 1003               |
   | 102             | Picasso       | 1004               |
+
+  - The PK now becomes the composite (PAINTER_ID, PAINTING_ID)
+  - There's a partial dependency: PAINTER_ID -> PAINTER_NAME
+    - From normalization we know this leads to redundancy and should be eliminated to achieve 2NF
+      - Redundancy in PAINTER_NAME 
 
 - So Painting stores a FK to Painter
 
