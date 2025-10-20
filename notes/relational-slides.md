@@ -349,7 +349,8 @@ Do these tables satisfy Entity and Referential Integrity?
 - A painter paints one or more paintings
 - A painting is painted by exactly one painter
 
-![alt text](../media/painter-painting-crow.excalidraw-2.svg)
+
+![alt text](../media/painter-painting-crow.excalidraw.svg)
 
 ---
 
@@ -365,8 +366,9 @@ Do these tables satisfy Entity and Referential Integrity?
 | 101             | Van Gogh      | 1005                 |
 
 **Problems:** 
-1. Redundant painter data
-2. PAINTER_ID no longer unique
+1. Redundant painter info
+   1. New PK: (PAINTER_ID, PAINTING_ID)
+   2. Partial dependency: PAINTER_ID -> PAINTER_LNAME (not in 2NF!)
 
 ---
 
@@ -383,6 +385,12 @@ Do these tables satisfy Entity and Referential Integrity?
 | 1005             | The Potato Eaters | 101             |
 
 > **Rule:** PK of "one" side → FK in "many" side
+
+---
+
+## 1:M: Foreign Key Placement (cont.)
+
+![alt text](../media/painter-painting-crow-fk.excalidraw.svg)
 
 ---
 
@@ -469,16 +477,33 @@ DEPARTMENT has FK to PROFESSOR (for "chairs" relationship)
 
 ## M:N: Why Not Directly Supported?
 
+<div class='cols'><div>
+
 **Wrong implementation ❌:**
 
-| CLASS_CODE (PK) | CLASS_ROOM | STU_ID (FK) |
-| --------------- | ---------- | ----------- |
-| CS101           | Room 201   | 501         |
-| CS101           | Room 201   | 502         |
-| MA201           | Room 105   | 501         |
-| MA201           | Room 105   | 502         |
+| CLS_CODE<br>(PK) | CLS_ROOM | STU_ID<br>(PK, FK) |
+| ---------------- | -------- | ------------------ |
+| CS101            | Room 201 | 501                |
+| CS101            | Room 201 | 502                |
+| MA201            | Room 105 | 501                |
+| MA201            | Room 105 | 502                |
 
-**Problem:** Massive redundancy! CLASS_ROOM repeated for every student.
+Class info redundancy due to CLS_CODE -> (CLS_ROOM, ...) partial dependency!
+
+</div><div>
+
+**Wrong implementation ❌:**
+
+| STU_ID<br>(PK) | STU_LNAME | CLS_CODE<br>(PK, FK) |
+| -------------- | --------- | -------------------- |
+| 501            | Gomez     | CS101                |
+| 501            | Gomez     | MA201                |
+| 502            | Jackson   | CS101                |
+| 502            | Jackson   | MA201                |
+
+Student info redundancy due to STU_ID -> (STU_LNAME, ...) partial dependency!
+
+</div></div>
 
 ---
 
@@ -528,10 +553,9 @@ DEPARTMENT has FK to PROFESSOR (for "chairs" relationship)
 - A book can have many authors (co-authored)
 
 **Tasks:**
-1. What type of relationship is this?
-2. Can it be directly implemented?
-3. Design the solution with table names and key attributes
-4. Draw the ERD
+- Draw the ERD with:
+   1.  The M:N relationship handled via two 1:M relationships to a composite entity
+   2.  The PKs and FKs shown
 
 ---
 
