@@ -592,10 +592,10 @@ Student info redundancy due to STU_ID -> (STU_LNAME, ...) partial dependency!
 
 Given these tables:
 
-| REGION_ID | REGION_NAME | STORE_ID | STORE_NAME | REGION_ID |
-| --------- | ----------- | -------- | ---------- | --------- |
-| 1001      | West Coast  | 2001     | Downtown   | 1001      |
-| 1002      | East Coast  | 2002     | Hillside   | 1001      |
+| REGION_ID | REGION_NAME |
+| --------- | ----------- |
+| 1001      | West Coast  |
+| 1002      | East Coast  |
 
 | STORE_ID | STORE_NAME | REGION_ID |
 | -------- | ---------- | --------- |
