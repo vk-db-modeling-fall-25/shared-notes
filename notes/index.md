@@ -17,7 +17,7 @@
 
 ## MySQL
 
-### Basics
+### Basics ([slides](./mysql-basics-slides.pdf))
    1. [Installation](mysql-install.md)
    2. [Example model](mysql-example-model.md)
    3. [Creating tables](mysql-creating-tables.md)
