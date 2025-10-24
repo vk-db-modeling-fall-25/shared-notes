@@ -16,9 +16,18 @@
 4. Case Study ([notes](erd-case-study.md))
 
 ## MySQL
+
+### Basics
    1. [Installation](mysql-install.md)
    2. [Example model](mysql-example-model.md)
    3. [Creating tables](mysql-creating-tables.md)
+   4. [Altering tables](mysql-altering-tables.md)
+   5. [Views](mysql-views.md)
+
+### Procedural
+   1. Stored Procedures
+   2. Triggers
+   3. User Defined Functions
 
 ## College-wide learning outcome: Communication
 
