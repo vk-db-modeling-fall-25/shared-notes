@@ -32,7 +32,7 @@
 
 ## Transactions
 
-   - [notes](./transactions.md)
+   - [notes](./transactions.md), [slides](./transactions-slides.pdf)
 
 ## NoSQL: TODO
 
