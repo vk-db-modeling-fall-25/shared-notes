@@ -22,7 +22,8 @@
    2. [Example model](mysql-example-model.md)
    3. [Creating tables](mysql-creating-tables.md)
    4. [Altering tables](mysql-altering-tables.md)
-   5. [Views](mysql-views.md)
+   5. [Manipulating data](mysql-manipulating-data.md)
+   6. [Views](mysql-views.md)
 
 ### [Procedural](./mysql-procedural.md) ([slides](./mysql-procedural-slides.pdf))
    1. [Stored Procedures](./mysql-stored-procedures.md)
