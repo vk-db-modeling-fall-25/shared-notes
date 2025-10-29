@@ -24,10 +24,10 @@
    4. [Altering tables](mysql-altering-tables.md)
    5. [Views](mysql-views.md)
 
-### Procedural
-   1. Stored Procedures
-   2. Triggers
-   3. User Defined Functions
+### [Procedural](./mysql-procedural.md)
+   1. [Stored Procedures](./mysql-stored-procedures.md)
+   2. [Triggers](./mysql-triggers.md)
+   3. [User Defined Functions](./mysql-user-defined-functions.md)
 
 ## College-wide learning outcome: Communication
 
