@@ -40,6 +40,14 @@
    3. Map Reduce
    4. Non-relational DBs
 
-## College-wide learning outcome: Communication
+## College-wide Learning Outcome: Communication
 
 - [notes](./communication.md), [slides](./communication-slides.pdf)
+
+---
+
+## References
+
+1. C. Coronel, S. Morris, *Database Systems: Design, Implementation & Management*
+
+---
