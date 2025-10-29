@@ -37,7 +37,7 @@
 ## NoSQL: TODO
 
    1. Big Data ([notes](big-data.md), [slides](big-data-slides.pdf))
-   2. Distributed FS ([notes](dfs.md))
+   2. Distributed FS ([notes](dfs.md), [slides](dfs-slides.pdf))
    3. Map Reduce
    4. Non-relational DBs
 
