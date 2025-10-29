@@ -11,8 +11,5 @@
   - Stored procedures
   - Triggers
   - Procedural SQL functions
-    - Don't confuse with SQL's built-in aggregate functions such as MIN
-    - Built-in functions can only be used in SQL statements
-    - Procedural SQL functions are mainly invoked within programs such as triggers and  stored procedures
 
 ---

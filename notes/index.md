@@ -24,10 +24,21 @@
    4. [Altering tables](mysql-altering-tables.md)
    5. [Views](mysql-views.md)
 
-### [Procedural](./mysql-procedural.md)
+### [Procedural](./mysql-procedural.md) ([slides](./mysql-procedural-slides.pdf))
    1. [Stored Procedures](./mysql-stored-procedures.md)
    2. [Triggers](./mysql-triggers.md)
    3. [User Defined Functions](./mysql-user-defined-functions.md)
+
+## Transactions
+
+   - TODO
+
+## NoSQL: TODO
+
+   1. Big Data
+   2. Distributed FS
+   3. Map Reduce
+   4. Non-relational DBs
 
 ## College-wide learning outcome: Communication
 

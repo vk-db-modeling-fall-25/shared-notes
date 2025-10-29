@@ -13,7 +13,6 @@ BEGIN
 END;
 ```
 
-- UDFs can be invoked from within stored procedures, triggers, and usually from SQL statements
-- Don't confuse with built-in SQL functions (like MIN, COUNT, etc.) which can only be invoked from SQL statements
+- UDFs can be invoked from within stored procedures, triggers, and of course from SQL statements
 
 ---
