@@ -613,6 +613,257 @@ DROP TABLE table_name;
 
 ---
 
+# MySQL: Manipulating Data
+
+* Insert new rows into MySQL tables
+* Update existing data in tables
+* Delete rows from tables
+* Use transactions to maintain data integrity
+
+---
+
+## Adding Rows: INSERT Statement
+
+**When all attributes are specified:**
+
+```sql
+INSERT INTO table_name
+  VALUES(value1, value2, ...),
+        (value3, value4, ...),
+        (value5, value6, ...);
+```
+
+* Values must match the order and data types of table columns
+* Can insert multiple rows at once
+
+---
+
+## Handling NULL Values: Two Approaches
+
+**Approach 1: Explicitly specify NULL**
+
+```sql
+INSERT INTO table_name
+  VALUES(value1, NULL, value3);
+```
+
+**Approach 2: Specify only non-NULL columns**
+
+```sql
+INSERT INTO table_name(column1, column3)
+  VALUES(value1, value3);
+```
+
+Unspecified columns automatically get NULL values
+
+---
+
+## 🎯 Active Learning: INSERT Practice
+
+**Scenario:** You have a `students` table with columns: 
+`id, name, email, phone`
+
+**Challenge:** Write INSERT statements for:
+1. A student with all information provided
+2. A student with no phone number (use both methods)
+
+---
+
+## Updating Rows: UPDATE Statement
+
+**Syntax:**
+
+```sql
+UPDATE table_name
+SET column1 = expression1, column2 = expression2, ...
+WHERE conditions;
+```
+
+⚠️ **Important:** MySQL "safe mode" requires a WHERE clause
+
+---
+
+## UPDATE Example: GTD Model
+
+Renaming a status from 'Next' to 'NextActions':
+
+```sql
+UPDATE status
+SET status_name = 'NextActions'
+WHERE status_name = 'Next';
+```
+
+**What happens if you forget the WHERE clause?**
+* All rows would be updated!
+* Safe mode prevents this mistake
+
+---
+
+## Deleting Rows: DELETE Statement
+
+**Syntax:**
+
+```sql
+DELETE FROM table_name
+WHERE conditions...;
+```
+
+**Example:** Delete the status 'Someday' from GTD model:
+
+```sql
+DELETE FROM status
+WHERE status_name = 'Someday';
+```
+
+⚠️ **Important:** Safe mode also requires WHERE clause here
+
+---
+
+## 🎯 Active Learning: UPDATE vs DELETE
+
+**Quick Poll - What happens if you run:**
+
+```sql
+DELETE FROM employees;
+```
+
+**in safe mode?**
+
+A) Deletes all employees  
+B) Error: WHERE clause required  
+C) Deletes only NULL rows  
+D) Asks for confirmation  
+
+---
+
+## Transactions: The Concept
+
+A **transaction** is a sequence of one or more statements executed **atomically** (all or nothing)
+
+**Why do we need transactions?**
+* Maintain data integrity when modifying related data
+* Handle concurrent modifications by multiple users
+* Prevent partial updates that could corrupt data
+
+*We'll study transaction management in detail later*
+
+---
+
+## Transaction Modes in MySQL
+
+**Default Mode:**
+* MySQL automatically wraps every statement in a transaction
+* Changes are saved automatically (autocommit)
+
+**Disable autocommit:**
+```sql
+SET autocommit = OFF;
+```
+
+---
+
+## Explicit Transaction Control
+
+**Structure:**
+
+```sql
+START TRANSACTION;
+
+-- Execute your statements here
+-- ...
+
+-- Choose one:
+COMMIT;    -- saves all changes
+ROLLBACK;  -- aborts all changes
+```
+
+All statements execute as a single atomic unit
+
+---
+
+## Transaction Example: Setup
+
+Create a sample banking database:
+
+```sql
+CREATE DATABASE banks;
+USE banks;
+
+CREATE TABLE users (
+    id INT PRIMARY KEY,
+    username VARCHAR(255) NOT NULL,
+    email VARCHAR(255)
+);
+```
+
+---
+
+## Transaction Example: COMMIT
+
+Successfully saving changes:
+
+```sql
+START TRANSACTION;
+
+INSERT INTO users (id, username) 
+VALUES (1, 'john');
+
+UPDATE users 
+SET email = 'john.doe@example.com' 
+WHERE id = 1;
+
+SELECT * FROM users; -- sees in-progress changes
+
+COMMIT; -- changes are now permanent
+```
+
+---
+
+## Transaction Example: ROLLBACK
+
+Aborting changes:
+
+```sql
+START TRANSACTION;
+
+INSERT INTO users (id, username) 
+VALUES (2, 'jane');
+
+UPDATE users 
+SET email = 'jane.doe@example.com' 
+WHERE id = 2;
+
+ROLLBACK; -- changes are discarded
+
+SELECT * FROM users; -- jane is NOT in the table
+```
+
+---
+
+## 🎯 Active Learning: Transaction Scenario
+
+**Banking Application Problem:**
+
+You need to transfer $100 from Account A to Account B.
+
+**Tasks:**
+1. Write the SQL statements needed
+2. Why must this be in a transaction?
+3. What could go wrong without a transaction?
+
+---
+
+## Key Takeaways
+
+* **INSERT** - Add new rows to tables
+* **UPDATE** - Modify existing data (requires WHERE in safe mode)
+* **DELETE** - Remove rows (requires WHERE in safe mode)
+* **Transactions** - Group statements atomically
+  * COMMIT to save
+  * ROLLBACK to abort
+
+---
+
 # Views: Overview
 
 ## What is a View?
