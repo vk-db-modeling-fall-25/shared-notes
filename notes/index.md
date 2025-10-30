@@ -34,12 +34,12 @@
 
    - [notes](./transactions.md), [slides](./transactions-slides.pdf)
 
-## NoSQL: TODO
+## NoSQL
 
    1. Big Data ([notes](big-data.md), [slides](big-data-slides.pdf))
    2. Distributed FS ([notes](dfs.md), [slides](dfs-slides.pdf))
    3. Map Reduce ([notes](mapreduce.md), [slides](mapreduce-slides.pdf))
-   4. Non-relational DBs
+   4. Non-relational DBs ([notes](nosql-dbs.md))
 
 ## College-wide Learning Outcome: Communication
 
