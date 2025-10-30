@@ -39,7 +39,7 @@
    1. Big Data ([notes](big-data.md), [slides](big-data-slides.pdf))
    2. Distributed FS ([notes](dfs.md), [slides](dfs-slides.pdf))
    3. Map Reduce ([notes](mapreduce.md), [slides](mapreduce-slides.pdf))
-   4. Non-relational DBs ([notes](nosql-dbs.md))
+   4. Non-relational DBs ([notes](nosql-dbs.md), [slides](./nosql-dbs-slides.pdf))
 
 ## College-wide Learning Outcome: Communication
 
