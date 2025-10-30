@@ -14,8 +14,6 @@ import java.util.concurrent.TimeUnit;
 import java.util.Map.Entry;
 import java.util.function.Consumer;
 
-import mapreduce.Mapper;
-
 /** Implementation of the map phase. */
 public class MapPhase<K extends Comparable<K>, V>
         implements Callable<Iterator<Entry<K, ArrayList<V>>>> {

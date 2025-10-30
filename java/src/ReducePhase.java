@@ -9,8 +9,6 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
 
-import mapreduce.Reducer;
-
 /** Implementation of the reduce phase. */
 public class ReducePhase<K extends Comparable<K>, V> implements Runnable {
 
