@@ -470,13 +470,35 @@ DELIMITER ;
 
 ---
 
-# User-Defined Functions (UDFs)
+# MySQL: User-Defined Functions (UDFs)
 
-* Like a stored procedure but **returns a value**
-* Can be invoked from:
-  * Stored procedures ✅
-  * Triggers ✅
-  * SQL statements ✅
+## Encapsulating Logic in Reusable Functions
+
+---
+
+# What is a User-Defined Function?
+
+> A **User-Defined Function (UDF)** is like a stored procedure except that it **returns a value**
+
+**Key Difference:**
+- **Stored Procedures:** Execute actions, can return multiple result sets
+- **UDFs:** Return a single value, can be used in expressions
+
+---
+
+# Why Use UDFs?
+
+**Benefits:**
+- ✅ **Encapsulate calculations** - Write once, use everywhere
+- ✅ **Improve readability** - Replace complex expressions with function names
+- ✅ **Ensure consistency** - Same logic applied uniformly across queries
+- ✅ **Simplify maintenance** - Update logic in one place
+
+**Example Use Cases:**
+- Calculate tax based on location
+- Format phone numbers consistently
+- Compute business metrics (e.g., shipping costs, discounts)
+- Validate data formats
 
 ---
 
@@ -484,15 +506,278 @@ DELIMITER ;
 
 ```sql
 CREATE FUNCTION function_name (
-    IN argument data-type, …
+    parameter_name data_type,
+    parameter_name data_type,
+    ...
 ) 
-RETURNS data-type
+RETURNS return_data_type
+[DETERMINISTIC | NOT DETERMINISTIC]
 BEGIN
-    Procedure SQL statements;
-    …
+    -- Variable declarations
+    DECLARE variable_name data_type;
+    
+    -- Function logic
+    -- ... your code here ...
+    
+    -- Must return a value
     RETURN (value or expression);
 END;
 ```
+
+---
+
+<!-- _class: compact -->
+# Simple UDF Example: Calculate Tax
+
+```sql
+DELIMITER //
+
+CREATE FUNCTION calculate_tax(price DECIMAL(10,2))
+RETURNS DECIMAL(10,2)
+DETERMINISTIC
+NO SQL
+BEGIN
+    RETURN price * 0.08;  -- 8% tax rate
+END //
+
+DELIMITER ;
+```
+
+**Usage in queries:**
+```sql
+SELECT 
+    product_name,
+    price,
+    calculate_tax(price) AS tax,
+    price + calculate_tax(price) AS total
+FROM products;
+```
+
+---
+
+# Where Can UDFs Be Invoked?
+
+UDFs can be called from:
+
+1. **SQL Statements** ✅
+   ```sql
+   SELECT calculate_tax(100.00);
+   WHERE calculate_tax(price) > 10.00;
+   ```
+
+2. **Stored Procedures** ✅
+   ```sql
+   SET total_tax = calculate_tax(order_total);
+   ```
+
+3. **Triggers** ✅
+   ```sql
+   SET NEW.tax = calculate_tax(NEW.price);
+   ```
+
+**This is the key advantage over stored procedures!**
+
+---
+
+# UDFs vs Built-in Functions
+
+**Don't confuse UDFs with built-in functions:**
+
+| Feature         | Built-in Functions          | User-Defined Functions    |
+| --------------- | --------------------------- | ------------------------- |
+| **Examples**    | `COUNT()`, `MIN()`, `SUM()` | Your custom functions     |
+| **Where used**  | SQL statements only         | SQL, procedures, triggers |
+| **Purpose**     | General-purpose operations  | Business-specific logic   |
+| **Who creates** | MySQL developers            | You!                      |
+
+---
+
+<!-- _class: compact -->
+
+# UDF with Database Query
+
+```sql
+DELIMITER //
+
+CREATE FUNCTION get_customer_name(cust_id INT)
+RETURNS VARCHAR(200)
+READS SQL DATA
+BEGIN
+    DECLARE customer_name VARCHAR(200);
+    
+    SELECT CONCAT(first_name, ' ', last_name) INTO customer_name
+    FROM customers
+    WHERE customer_id = cust_id;
+    
+    IF customer_name IS NULL THEN
+        RETURN 'Unknown Customer';
+    END IF;
+    
+    RETURN customer_name;
+END //
+
+DELIMITER ;
+```
+
+**Note:** Use `READS SQL DATA` when function queries the database
+
+---
+
+<!-- _class: compact -->
+
+# DETERMINISTIC Keyword
+
+**DETERMINISTIC** - Function always returns same output for same input
+- Required when binary logging is enabled
+- Allows MySQL to optimize query execution and replication
+- Safe for statment-based replication (SBR)
+
+**NOT DETERMINISTIC** - Output may vary
+- Use when: function uses `NOW()`, `RAND()`, `UUID()`
+- Requires row-based replication (RBR)
+
+```sql
+-- DETERMINISTIC - safe for replication
+CREATE FUNCTION add_tax(price DECIMAL(10,2))
+RETURNS DECIMAL(10,2)
+DETERMINISTIC
+BEGIN
+    RETURN price * 1.08;
+END;
+```
+
+---
+
+<!-- _class: compact -->
+
+# Function Characteristics
+
+Specify what your function does with data:
+
+| Characteristic        | Meaning                 | When to Use              |
+| --------------------- | ----------------------- | ------------------------ |
+| **NO SQL**            | Doesn't access database | Pure calculations        |
+| **READS SQL DATA**    | Only reads database     | Lookup functions         |
+| **MODIFIES SQL DATA** | May modify database     | Rarely used in functions |
+
+**Example:**
+```sql
+CREATE FUNCTION calculate_discount(price DECIMAL(10,2))
+RETURNS DECIMAL(10,2)
+DETERMINISTIC
+NO SQL  -- Pure calculation, no database access
+BEGIN
+    RETURN price * 0.15;
+END;
+```
+
+---
+
+<!-- _class: compact -->
+
+# Common UDF Patterns
+
+**1. Business Rule Calculations:**
+```sql
+CREATE FUNCTION calculate_commission(sales DECIMAL(10,2))
+CREATE FUNCTION apply_discount(price DECIMAL(10,2), tier VARCHAR(20))
+```
+
+**2. Data Formatting:**
+```sql
+CREATE FUNCTION format_ssn(ssn VARCHAR(9))
+CREATE FUNCTION format_currency(amount DECIMAL(10,2))
+```
+
+**3. Data Validation:**
+```sql
+CREATE FUNCTION is_valid_email(email VARCHAR(255))
+CREATE FUNCTION is_valid_zipcode(zip VARCHAR(10))
+```
+
+**4. Lookups:**
+```sql
+CREATE FUNCTION get_category_name(cat_id INT)
+CREATE FUNCTION get_tax_rate(state VARCHAR(2))
+```
+
+---
+
+# 🎯 Active Learning: Debug the Function
+
+**What's wrong with this function?**
+
+```sql
+DELIMITER //
+
+CREATE FUNCTION get_discount(customer_type VARCHAR(20))
+RETURNS DECIMAL(3,2)
+DETERMINISTIC
+BEGIN
+    IF customer_type = 'VIP' THEN
+        SET discount = 0.20;
+    ELSEIF customer_type = 'Regular' THEN
+        SET discount = 0.10;
+    END IF;
+END //
+
+DELIMITER ;
+```
+
+---
+
+<!-- _class: compact -->
+
+# Solution: Fixed Function
+
+**Issues found:**
+1. ❌ Variable `discount` not declared
+2. ❌ Missing RETURN statement
+3. ❌ No handling for unknown customer types
+
+```sql
+DELIMITER //
+
+CREATE FUNCTION get_discount(customer_type VARCHAR(20))
+RETURNS DECIMAL(3,2)
+DETERMINISTIC
+BEGIN
+    DECLARE discount DECIMAL(3,2);  -- ✓ Declare variable
+    
+    IF customer_type = 'VIP' THEN
+        SET discount = 0.20;
+    ELSEIF customer_type = 'Regular' THEN
+        SET discount = 0.10;
+    ELSE
+        SET discount = 0.00;  -- ✓ Handle unknown types
+    END IF;
+    
+    RETURN discount;  -- ✓ Return statement
+END //
+DELIMITER ;
+```
+
+---
+
+# Functions vs Procedures: When to Use Which?
+
+| Use Function When...               | Use Procedure When...             |
+| ---------------------------------- | --------------------------------- |
+| Need to return **single value**    | Need **multiple result sets**     |
+| Want to use in **SQL expressions** | Need **OUT/INOUT parameters**     |
+| Performing **calculations**        | Performing **complex operations** |
+| **Reading** data only              | **Modifying** data                |
+| Need **transaction safety**        | Need **transaction control**      |
+
+**Rule of Thumb:**
+- Calculations and lookups → Functions
+- Business processes and workflows → Procedures
+
+---
+
+# MySQL: Triggers
+
+## Automatic invocation
 
 ---
 
