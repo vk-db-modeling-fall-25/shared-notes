@@ -725,6 +725,8 @@ END
 
 ---
 
+<!-- _class: compact -->
+
 # Final Solution: DRY with Procedure
 
 **Create reusable procedure:**
