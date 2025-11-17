@@ -402,11 +402,63 @@ Lock types:
 2. Shared/Exclusive
 
     - *Exclusive* lock is like a binary lock and is used when a transaction mutates data
+
+      ```sql
+      START TRANSACTION;
+
+      -- 1. LOCK ACQUIRED: Exclusive lock grabbed here
+      SELECT stock_quantity FROM products WHERE product_id = 1 FOR UPDATE;
+
+      -- 2. LOCK HELD: Still holding the lock during all operations
+      UPDATE products SET stock_quantity = stock_quantity - 5 WHERE product_id = 1;
+      INSERT INTO orders (product_id, quantity) VALUES (1, 5);
+
+      -- 3. LOCK RELEASED: Lock released here
+      COMMIT;  -- or ROLLBACK
+      ```
+
+      Transaction T1:
+      
+      ```sql
+      START TRANSACTION;
+      SELECT balance FROM accounts WHERE account_id = 101 FOR UPDATE;
+      -- Lock acquired
+      ```
+
+      Transaction T2 (concurrent):
+      ```sql
+      START TRANSACTION;
+      SELECT balance FROM accounts WHERE account_id = 101 FOR UPDATE;
+      -- BLOCKS HERE - must wait for T1 to finish
+      ```
+  
     - *Shared* lock is a common lock that grants read-only access to multiple transactions
+  
+      ```sql
+      -- FOR SHARE: "I'm reading, don't change it"
+      START TRANSACTION;
+      SELECT balance FROM accounts WHERE account_id = 101 FOR SHARE;
+      -- Others can read with FOR SHARE, but cannot update
+
+      -- FOR UPDATE: "I'm about to change this, stay away"
+      START TRANSACTION;
+      SELECT balance FROM accounts WHERE account_id = 101 FOR UPDATE;
+      -- Nobody else can read with locks or write 
+      ```
+
     - So three possible locking states
       1. Unlocked
       2. Shared (read)
       3. Exclusive (write)
+
+      Lock Compatibility Matrix:
+
+      |                        | T2: Regular SELECT | T2: FOR SHARE | T2: FOR UPDATE | T2: UPDATE/DELETE |
+      | ---------------------- | ------------------ | ------------- | -------------- | ----------------- |
+      | **T1: Regular SELECT** | ✅ Compatible       | ✅ Compatible  | ✅ Compatible   | ✅ Compatible      |
+      | **T1: FOR SHARE**      | ✅ Compatible       | ✅ Compatible  | ❌ Blocks       | ❌ Blocks          |
+      | **T1: FOR UPDATE**     | ✅ Compatible       | ❌ Blocks      | ❌ Blocks       | ❌ Blocks          |
+      | **T1: UPDATE/DELETE**  | ✅ Compatible       | ❌ Blocks      | ❌ Blocks       | ❌ Blocks          |
 
 Locking problems:
 

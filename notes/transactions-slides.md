@@ -3,6 +3,21 @@ marp: true
 theme: default
 paginate: true
 header: Transactions &nbsp;&nbsp;|&nbsp;&nbsp; CSD331: Database Modeling & Design &nbsp;&nbsp;|&nbsp;&nbsp; Fall'25 &nbsp;&nbsp;|&nbsp;&nbsp; Vishesh Khemani
+style: |
+  .cols {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 30px;
+  }
+  .cols h2 {
+    margin-top: 0;
+  }
+  /* Global compact typography */
+  section.compact {
+      font-size: 1.5em;      /* Slightly smaller overall */
+      line-height: 1.25;      /* Tighter vertical rhythm */
+      letter-spacing: -0.005em; /* Slightly tighter tracking; keep subtle for readability */
+  }
 ---
 
 # Database Transactions
@@ -160,12 +175,12 @@ Using a **transaction log**!
 
 ## Transaction Log Structure
 
-| LSN | Txn ID | Operation | Table | Old Value | New Value | Prev LSN | Next LSN |
-|-----|--------|-----------|-------|-----------|-----------|----------|----------|
-| 100 | 500 | BEGIN | - | - | - | NULL | 101 |
-| 101 | 500 | UPDATE | Orders | status: 'PENDING' | status: 'PROCESSING' | 100 | 102 |
-| 102 | 500 | UPDATE | Inventory | SKU-12345: qty=150 | SKU-12345: qty=148 | 101 | 103 |
-| 103 | 500 | COMMIT | - | - | - | 102 | NULL |
+| LSN | Txn ID | Operation | Table     | Old Value          | New Value            | Prev LSN | Next LSN |
+| --- | ------ | --------- | --------- | ------------------ | -------------------- | -------- | -------- |
+| 100 | 500    | BEGIN     | -         | -                  | -                    | NULL     | 101      |
+| 101 | 500    | UPDATE    | Orders    | status: 'PENDING'  | status: 'PROCESSING' | 100      | 102      |
+| 102 | 500    | UPDATE    | Inventory | SKU-12345: qty=150 | SKU-12345: qty=148   | 101      | 103      |
+| 103 | 500    | COMMIT    | -         | -                  | -                    | 102      | NULL     |
 
 ---
 
@@ -210,14 +225,14 @@ The transaction log is stored separately from database files.
 
 Initial balance: $1000
 
-| Time | Transaction T1 | Transaction T2 | Balance |
-|------|---------------|----------------|---------|
-| t1 | READ(1000) | | 1000 |
-| t2 | | READ(1000) | 1000 |
-| t3 | Balance = 1000 - 200 | | 1000 |
-| t4 | | Balance = 1000 + 300 | 1000 |
-| t5 | WRITE(800) | | **800** |
-| t6 | | WRITE(1300) | **1300** |
+| Time | Transaction T1       | Transaction T2       | Balance  |
+| ---- | -------------------- | -------------------- | -------- |
+| t1   | READ(1000)           |                      | 1000     |
+| t2   |                      | READ(1000)           | 1000     |
+| t3   | Balance = 1000 - 200 |                      | 1000     |
+| t4   |                      | Balance = 1000 + 300 | 1000     |
+| t5   | WRITE(800)           |                      | **800**  |
+| t6   |                      | WRITE(1300)          | **1300** |
 
 **Problem:** The $200 withdrawal is completely lost!
 
@@ -227,10 +242,10 @@ Initial balance: $1000
 
 **Correct serial execution:**
 
-| Time | Transaction T1 | Transaction T2 | Balance |
-|------|---------------|----------------|---------|
-| t1-t5 | Withdraw $200 | | 1000 → **800** |
-| t6-t10 | | Deposit $300 | 800 → **1100** |
+| Time   | Transaction T1 | Transaction T2 | Balance        |
+| ------ | -------------- | -------------- | -------------- |
+| t1-t5  | Withdraw $200  |                | 1000 → **800** |
+| t6-t10 |                | Deposit $300   | 800 → **1100** |
 
 **Expected:** $1100 ✓
 
@@ -242,13 +257,13 @@ Initial balance: $1000
 
 **Scenario:** T2 reads T1's data before T1 commits (T1 later rolls back)
 
-| Time | Transaction T1 | Transaction T2 | Balance |
-|------|---------------|----------------|---------|
-| t1-t4 | Withdraw $500 | | 1000 → **500** |
-| t5 | | READ(500) | 500 |
-| t6 | | Check: 500 ≥ 600? NO | 500 |
-| t7 | | Reject withdrawal | 500 |
-| t8 | ROLLBACK | | **1000** |
+| Time  | Transaction T1 | Transaction T2       | Balance        |
+| ----- | -------------- | -------------------- | -------------- |
+| t1-t4 | Withdraw $500  |                      | 1000 → **500** |
+| t5    |                | READ(500)            | 500            |
+| t6    |                | Check: 500 ≥ 600? NO | 500            |
+| t7    |                | Reject withdrawal    | 500            |
+| t8    | ROLLBACK       |                      | **1000**       |
 
 **Problem:** T2 made a decision based on data that was rolled back!
 
@@ -260,13 +275,13 @@ Initial balance: $1000
 
 Initial state: A=$500, B=$300, C=$200 (Total = $1000)
 
-| Time | T1: Transfer $100 A→C | T2: Calculate Sum | A | B | C |
-|------|-----------------------|-------------------|---|---|---|
-| t1 | | READ(A) = 500 | 500 | 300 | 200 |
-| t2 | WRITE(A = 400) | | **400** | 300 | 200 |
-| t3 | WRITE(C = 300) | | 400 | 300 | **300** |
-| t4 | | READ(B) = 300 | 400 | 300 | 300 |
-| t5 | | READ(C) = 300 | 400 | 300 | 300 |
+| Time | T1: Transfer $100 A→C | T2: Calculate Sum | A       | B   | C       |
+| ---- | --------------------- | ----------------- | ------- | --- | ------- |
+| t1   |                       | READ(A) = 500     | 500     | 300 | 200     |
+| t2   | WRITE(A = 400)        |                   | **400** | 300 | 200     |
+| t3   | WRITE(C = 300)        |                   | 400     | 300 | **300** |
+| t4   |                       | READ(B) = 300     | 400     | 300 | 300     |
+| t5   |                       | READ(C) = 300     | 400     | 300 | 300     |
 
 **Sum = 500 + 300 + 300 = 1100** ✗ (Money appeared from nowhere!)
 
@@ -297,10 +312,10 @@ Initial state: A=$500, B=$300, C=$200 (Total = $1000)
 
 ## Conflicting Operations Matrix
 
-|  | **T2: Read** | **T2: Write** |
-|---|:---:|:---:|
-| **T1: Read** | ✅ No Conflict | ⚠️ Conflict |
-| **T1: Write** | ⚠️ Conflict | ⚠️ Conflict |
+|               | **T2: Read**  | **T2: Write** |
+| ------------- | :-----------: | :-----------: |
+| **T1: Read**  | ✅ No Conflict |  ⚠️ Conflict   |
+| **T1: Write** |  ⚠️ Conflict   |  ⚠️ Conflict   |
 
 **Key insight:** Only Read-Read operations don't conflict!
 
@@ -340,13 +355,13 @@ Initial state: A=$500, B=$300, C=$200 (Total = $1000)
 
 From worst to best:
 
-| Level | Granularity | Trade-off |
-|-------|-------------|-----------|
-| Database | Entire DB | 🔴 Serializes everything |
-| Table | Whole table | 🟠 Better, still coarse |
-| Page | 4KB disk page | 🟡 Multiple rows |
-| Row | Single row | 🟢 Good balance |
-| Field | Single field | 🟢 Best, most complex |
+| Level    | Granularity   | Trade-off               |
+| -------- | ------------- | ----------------------- |
+| Database | Entire DB     | 🔴 Serializes everything |
+| Table    | Whole table   | 🟠 Better, still coarse  |
+| Page     | 4KB disk page | 🟡 Multiple rows         |
+| Row      | Single row    | 🟢 Good balance          |
+| Field    | Single field  | 🟢 Best, most complex    |
 
 **Most common:** Row-level locking
 
@@ -363,6 +378,74 @@ From worst to best:
 - Three states: unlocked, shared (read), exclusive (write)
 - Multiple transactions can hold shared locks
 - Only one transaction can hold exclusive lock
+
+---
+
+## Exclusive Locks
+
+```sql
+START TRANSACTION;
+
+-- 1. LOCK ACQUIRED: Exclusive lock grabbed here
+SELECT stock_quantity FROM products WHERE product_id = 1 FOR UPDATE;
+
+-- 2. LOCK HELD: Still holding the lock during all operations
+UPDATE products SET stock_quantity = stock_quantity - 5 WHERE product_id = 1;
+INSERT INTO orders (product_id, quantity) VALUES (1, 5);
+
+-- 3. LOCK RELEASED: Lock released here
+COMMIT;  -- 
+```
+
+<div class='cols'><div>
+
+Transaction T1:
+
+```sql
+START TRANSACTION;
+SELECT balance FROM accounts WHERE account_id = 101 FOR UPDATE;
+-- Lock acquired
+```
+
+</div><div>
+
+Transaction T2 (concurrent):
+```sql
+START TRANSACTION;
+SELECT balance FROM accounts WHERE account_id = 101 FOR UPDATE;
+-- BLOCKS HERE - must wait for T1 to finish
+```
+
+</div></div>
+
+---
+
+## Shared Locks
+
+```sql
+-- FOR SHARE: "I'm reading, don't change it"
+START TRANSACTION;
+SELECT balance FROM accounts WHERE account_id = 101 FOR SHARE;
+-- Others can read with FOR SHARE, but cannot update
+
+-- FOR UPDATE: "I'm about to change this, stay away"
+START TRANSACTION;
+SELECT balance FROM accounts WHERE account_id = 101 FOR UPDATE;
+-- Nobody else can read with locks or write 
+```
+
+---
+
+<!-- _class: compact -->
+
+## Lock Compatibility Matrix:
+
+|                        | T2: Regular SELECT | T2: FOR SHARE | T2: FOR UPDATE | T2: UPDATE/DELETE |
+| ---------------------- | ------------------ | ------------- | -------------- | ----------------- |
+| **T1: Regular SELECT** | ✅ Compatible       | ✅ Compatible  | ✅ Compatible   | ✅ Compatible      |
+| **T1: FOR SHARE**      | ✅ Compatible       | ✅ Compatible  | ❌ Blocks       | ❌ Blocks          |
+| **T1: FOR UPDATE**     | ✅ Compatible       | ❌ Blocks      | ❌ Blocks       | ❌ Blocks          |
+| **T1: UPDATE/DELETE**  | ✅ Compatible       | ❌ Blocks      | ❌ Blocks       | ❌ Blocks          |
 
 ---
 
@@ -411,14 +494,14 @@ If conflict detected → abort and retry
 
 ## Optimistic vs Pessimistic
 
-| Factor | Optimistic (OCC) | Pessimistic (Locks) |
-|--------|------------------|---------------------|
-| **Low Contention** | ✅ Higher throughput | Lower (lock overhead) |
-| **High Contention** | Lower (many retries) | ✅ Better throughput |
-| **Read-Heavy** | ✅ Much higher | Lower (lock overhead) |
-| **Write-Heavy** | Depends | ✅ Often better |
-| **Latency** | Low (no waiting) | Higher (blocking) |
-| **Wasted Work** | High on conflicts | None |
+| Factor              | Optimistic (OCC)     | Pessimistic (Locks)   |
+| ------------------- | -------------------- | --------------------- |
+| **Low Contention**  | ✅ Higher throughput  | Lower (lock overhead) |
+| **High Contention** | Lower (many retries) | ✅ Better throughput   |
+| **Read-Heavy**      | ✅ Much higher        | Lower (lock overhead) |
+| **Write-Heavy**     | Depends              | ✅ Often better        |
+| **Latency**         | Low (no waiting)     | Higher (blocking)     |
+| **Wasted Work**     | High on conflicts    | None                  |
 
 ---
 
