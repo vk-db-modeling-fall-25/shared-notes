@@ -1,3 +1,5 @@
+package mapreduce;
+
 import java.util.Map.Entry;
 import java.util.function.Consumer;
 

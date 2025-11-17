@@ -1,3 +1,5 @@
+package mapreduce;
+
 import java.util.Collection;
 import java.util.function.Consumer;
 

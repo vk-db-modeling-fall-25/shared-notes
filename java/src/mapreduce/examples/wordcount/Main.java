@@ -1,4 +1,5 @@
-import java.io.File;
+package mapreduce.examples.wordcount;
+
 import java.util.Collection;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -25,8 +26,10 @@ public class Main {
             }
             consumer.accept(key + ": " + sum);
         };
-        Spec<String, Integer> spec = new Spec<>("java/src/examples/data", mapper, reducer,
-                "java/src/examples/wordcount");
+        String srcDir = "src/mapreduce/examples/data";
+        String dstDir = "src/mapreduce/examples/wordcount/output";
+        int numOutputShards = 3;
+        Spec<String, Integer> spec = new Spec<>(srcDir, mapper, reducer, dstDir, numOutputShards);
         Runner<String, Integer> runner = new Runner<>(spec);
         runner.run();
     }

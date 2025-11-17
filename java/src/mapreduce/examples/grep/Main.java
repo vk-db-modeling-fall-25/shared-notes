@@ -1,3 +1,5 @@
+package mapreduce.examples.grep;
+
 import java.util.Collection;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -23,8 +25,10 @@ public class Main {
                 consumer.accept(key + ": " + v);
             }
         };
-        Spec<String, String> spec = new Spec<>("java/src/examples/data",
-                mapper, reducer, "java/src/examples/grep");
+        String srcDir = "src/mapreduce/examples/data";
+        String dstDir = "src/mapreduce/examples/grep/output";
+        int numOutputShards = 3;
+        Spec<String, String> spec = new Spec<>(srcDir, mapper, reducer, dstDir, numOutputShards);
         Runner<String, String> runner = new Runner<>(spec);
         runner.run();
     }

@@ -1,3 +1,5 @@
+package mapreduce.impl;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
@@ -9,20 +11,26 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
 
+import mapreduce.Reducer;
+
 /** Implementation of the reduce phase. */
 public class ReducePhase<K extends Comparable<K>, V> implements Runnable {
 
     public ReducePhase(Iterator<Entry<K, ArrayList<V>>> it,
-            Reducer<K, V> reducer, String dstDir) {
+            Reducer<K, V> reducer, String dstDir, int numOutputShards) {
         this.it = it;
         this.reducer = reducer;
         this.dstDir = dstDir;
+        File dir = new File(dstDir);
+        if (!dir.exists()) {
+            dir.mkdir();
+        }
+        this.numOutputShards = numOutputShards;
     }
 
     @Override
     public void run() {
         System.out.println("Starting reduce phase");
-        final int numOutputShards = 3;
         ExecutorService executor = Executors.newFixedThreadPool(
                 numOutputShards);
         for (int i = 0; i < numOutputShards; i++) {
@@ -82,4 +90,5 @@ public class ReducePhase<K extends Comparable<K>, V> implements Runnable {
     private final Iterator<Entry<K, ArrayList<V>>> it;
     private final Reducer<K, V> reducer;
     private final String dstDir;
+    private final int numOutputShards;
 }

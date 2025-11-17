@@ -1,3 +1,5 @@
+package mapreduce.impl;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -13,6 +15,8 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 import java.util.Map.Entry;
 import java.util.function.Consumer;
+
+import mapreduce.Mapper;
 
 /** Implementation of the map phase. */
 public class MapPhase<K extends Comparable<K>, V>
@@ -30,6 +34,7 @@ public class MapPhase<K extends Comparable<K>, V>
     public Iterator<Entry<K, ArrayList<V>>> call() throws Exception {
         // List files in source directory.
         File dir = new File(srcDir);
+        System.out.println(dir.getAbsolutePath());
         File[] files = dir.listFiles();
         if (files == null || files.length == 0) {
             System.out.println("There are no input files to process");

@@ -1,6 +1,11 @@
+package mapreduce;
+
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Map.Entry;
+
+import mapreduce.impl.MapPhase;
+import mapreduce.impl.ReducePhase;
 
 public class Runner<K extends Comparable<K>, V> implements Runnable {
 
@@ -21,7 +26,7 @@ public class Runner<K extends Comparable<K>, V> implements Runnable {
         }
 
         ReducePhase<K, V> reducePhase = new ReducePhase<>(
-                it, spec.getReducer(), spec.getDstDir());
+                it, spec.getReducer(), spec.getDstDir(), spec.getNumOutputShards());
         reducePhase.run();
     }
 

@@ -1,0 +1,36 @@
+<project name="Java" default="run-all-tests" basedir=".">
+    <!-- Project-specific properties -->
+    <property name="src.dir"     value="src"/>
+    <property name="build.dir"   value="build"/>
+
+    <!-- Initialize the build directory -->
+    <target name="init">
+        <echo>Creating build directories...</echo>
+        <mkdir dir="${build.dir}"/>
+    </target>
+
+    <!-- Compile the Java source code -->
+    <target name="compile" depends="init">
+        <echo>Compiling source files...</echo>
+        <javac srcdir="${src.dir}"
+               destdir="${build.dir}"
+               includeantruntime="false">
+            <!-- Exclude files ending with Test.java -->
+            <exclude name="**/*Test.java"/>
+        </javac>
+    </target>
+
+    <target name="run-grep" depends="compile">
+        <java classname="mapreduce.examples.grep.Main" classpath="${build.dir}" fork="true"></java>
+    </target>
+
+    <target name="run-wordcount" depends="compile">
+        <java classname="mapreduce.examples.wordcount.Main" classpath="${build.dir}" fork="true"></java>
+    </target>
+
+    <!-- Clean the build directory -->
+    <target name="clean">
+        <echo>Cleaning up...</echo>
+        <delete dir="${build.dir}"/>
+    </target>
+</project>
