@@ -30,22 +30,16 @@ style: |
 
 # Big Data
 
-**Understanding Volume, Velocity, and Variety**
+**Volume, Velocity, Variety**
 
 ---
 
 ## What is Big Data?
 
 > **Big Data** refers to data that displays the characteristics of volume, velocity, and variety (**the 3 Vs**) to an extent that makes the data unsuitable for management by a relational database management system.
-
----
-
-## The 3 Vs of Big Data
-
-- **Volume**: the quantity of data to be stored
-
+ 
+- **Volume**: the amount of data to be stored
 - **Velocity**: the speed at which data is entering the system
-
 - **Variety**: the variations in the structure of the data to be stored
 
 ---
@@ -91,15 +85,15 @@ style: |
 
 ## Units of Data Volume
 
-| Amount of Data | Name     | Abbreviation |
-| -------------- | -------- | ------------ |
-| 1024 bytes     | kibibyte | KiB          |
-| 1024 KiB       | mebibyte | MiB          |
-| 1024 MiB       | gibibyte | GiB          |
-| 1024 GiB       | tebibyte | TiB          |
-| 1024 TiB       | pebibyte | PiB          |
-| 1024 PiB       | exbibyte | EiB          |
-| 1024 EiB       | zebibyte | ZiB          |
+| Amount of Data        | Name     | Abbreviation | Order of Magnitude |
+| --------------------- | -------- | ------------ | ------------------ |
+| 1024 ($2^{10}$) bytes | kibibyte | KiB          | ~$10^3$ bytes      |
+| 1024 KiB              | mebibyte | MiB          | ~$10^6$ bytes      |
+| 1024 MiB              | gibibyte | GiB          | ~$10^9$ bytes      |
+| 1024 GiB              | tebibyte | TiB          | ~$10^{12}$ bytes   |
+| 1024 TiB              | pebibyte | PiB          | ~$10^{15}$ bytes   |
+| 1024 PiB              | exbibyte | EiB          | ~$10^{18}$ bytes   |
+| 1024 EiB              | zebibyte | ZiB          | ~$10^{21}$ bytes   |
 
 **Note**: kibi-, mibi-, gibi- etc. increase by 1024x (2¹⁰), while kilo-, mega-, giga- increase by 1000x
 
@@ -136,8 +130,8 @@ style: |
 
 |           | Capacity        | Cost             | Coordination    |
 | --------- | --------------- | ---------------- | --------------- |
-| Scale Up  | 👎 machine limit | 👎 specialized hw | 👍 few machines  |
-| Scale Out | 👍 add machines  | 👍 commodity hw   | 👎 many machines |
+| Scale Up  | ❌ machine limit | ❌ specialized hw | ✅ few machines  |
+| Scale Out | ✅ add machines  | ✅ commodity hw   | ❌ many machines |
 
 ---
 
@@ -238,12 +232,14 @@ style: |
 
 1. Big Data is defined by the **3 Vs**: Volume, Velocity, and Variety
 
-2. **Scaling Out** (horizontal) is preferred over Scaling Up (vertical) for Big Data
+2. **Scaling Out** (horizontal scaling) is needed for Volume and Velocity (not scaling up or vertical scaling)
 
-3. **RDBMS** struggles with Big Data because it requires high coordination and structured data
+3. **RDBMS** struggles with Big Data because
+   1. It requires high coordination (=> horizontal scaling infeasible => can't handle Volume and/or Velocity)
+   2. It requires data to conform to model/schema (=> can't handle Variety) 
 
-4. **NoSQL** trades relational power for the ability to scale out and handle variety
+4. **NoSQL** trades relational power for the ability to scale out (to handle Volume/Velocity) and to support a Variety of data
 
-5. Modern cloud storage systems are approaching **Zebibyte** scale
+5. Modern cloud storage systems are approaching **Zebibyte** scale (~10^21 bytes)
 
 ---
