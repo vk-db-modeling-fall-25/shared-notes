@@ -22,7 +22,7 @@ style: |
 
 # Database Transactions
 
-**A journey into ACID properties, concurrency control, and data integrity**
+**An ACID trip**
 
 ---
 
@@ -71,6 +71,8 @@ SELECT * FROM account;
 
 **Question:** What happens if we crash between the two UPDATEs?
 
+(Simulate using two sql sessions)
+
 ---
 
 ## The ACID Properties
@@ -86,53 +88,88 @@ These four properties are the foundation of reliable database systems.
 
 ---
 
-## Atomicity
+## Atomicity (A in ACID)
 
 > Either all database requests in a transaction complete or none complete
 
-**Example scenario:**
-1. Transaction starts
-2. Some requests complete
-3. Database crashes before commit
-4. Database recovers → **pre-transaction state**
+e.g. bank Transfer: $100 from Account A to Account B, with faults
 
-**Why needed?** Logical consistency (e.g., money can't disappear mid-transfer!)
+<div class='cols'><div>
+
+✓ ATOMIC
+  - Money deducted from A AND added to B (or neither)
+  
+✗ NOT ATOMIC
+- Money deducted from A but NOT added to B (inconsistency!)
+
+</div><div>
+
+| Time | Request            |
+| ---- | ------------------ |
+| t0   | Start txn          |
+| t1   | Deduct $100 from A |
+| t2   | Add $100 to B      |
+| t3   | Commit txn         |
+
+</div></div>
 
 ---
 
-## Consistency
+## Consistency (C in ACID)
 
 > When a transaction completes, the database must be in a consistent state (entity integrity, referential integrity, constraints, etc.)
 
-**Key insight:** Individual requests in a transaction may temporarily violate constraints, but the complete transaction must not.
+e.g. account balance cannot be negative
 
-**Example:** Deleting a parent row and cascading to children
+✓ CONSISTENT: Transaction rejected if it violates this rule
+✗ INCONSISTENT: Negative balance allowed (breaks business logic)
+
+
+**Note:** Individual requests in a transaction may temporarily violate constraints, but the complete transaction must not.
+
+e.g deleting a parent row and cascading to existence-dependent children
 
 ---
 
-## Isolation
+## Isolation (I in ACID)
 
 > Data changes made by an in-progress transaction are not visible to another transaction until the first transaction completes
 
-**Critical in multi-user environments!**
+**Critical in multi-user environments!** (due to inter-leaved execution of txns)
+
+Transaction 1: Read balance ($1000), add $100
+Transaction 2: Read balance ($1000), subtract $50
+
+✓ ISOLATED: Transactions execute in order, no conflicts
+✗ NOT ISOLATED: Both read $1000, results conflict
 
 ---
+
+<!-- _class: compact -->
 
 ## Isolation Example
 
-Two concurrent transactions updating the same row:
+- Starting balance: $1,000
+- T1: Read balance and add $100
+- T2: Read balance and subtract $50
+- Correct balance (serial execution): $1,000 + $100 - $50 = $1050
 
-1. txn1: increment value from 6 → 7
-2. txn2: tries to increment from 6 → 7 (still sees 6!)
-3. txn1 commits successfully
-4. txn2 encounters concurrent modification error
-5. txn2 retries, sees 7, increments to 8, commits
+Interleaved execution:
 
-**Result:** Correct final value of 8
+| Time | T1                                      | T2                                                       |
+| ---- | --------------------------------------- | -------------------------------------------------------- |
+| t0   | Start                                   |                                                          |
+| t1   | Read ($1,000) and modify +$100 ($1,100) |                                                          |
+| t2   |                                         | Start                                                    |
+| t3   |                                         | Read ($1,000 vs $1,100) and modify -$50 ($950 vs $1,050) |
+| t4   |                                         | Commit ($950 ✓ vs $1050 ✗)                               |
+| t5   | Commit ($1,100 ✗ )                      |                                                          |
+
+
 
 ---
 
-## Serializability
+### Serializability
 
 **Key concept:** Concurrent execution schedule yields the same result as if transactions executed serially
 
@@ -142,15 +179,13 @@ Two concurrent transactions updating the same row:
 
 ---
 
-## Durability
+## Durability (D in ACID)
 
 > When a transaction is committed, it cannot be undone or lost, even in the event of a system failure
 
-**Example scenario:**
-1. Transaction commits
-2. Data waiting in memory buffer
-3. Database crashes
-4. Database recovers → **transaction still committed!**
+✓ DURABLE: Data committed to disk; survives power failure
+✗ NOT DURABLE: Data only in memory; lost if system crashes
+
 
 ---
 
@@ -173,14 +208,18 @@ Using a **transaction log**!
 
 ---
 
+<!-- _class: compact -->
+
 ## Transaction Log Structure
 
-| LSN | Txn ID | Operation | Table     | Old Value          | New Value            | Prev LSN | Next LSN |
-| --- | ------ | --------- | --------- | ------------------ | -------------------- | -------- | -------- |
-| 100 | 500    | BEGIN     | -         | -                  | -                    | NULL     | 101      |
-| 101 | 500    | UPDATE    | Orders    | status: 'PENDING'  | status: 'PROCESSING' | 100      | 102      |
-| 102 | 500    | UPDATE    | Inventory | SKU-12345: qty=150 | SKU-12345: qty=148   | 101      | 103      |
-| 103 | 500    | COMMIT    | -         | -                  | -                    | 102      | NULL     |
+e.g. ordering qty 2 of a product
+
+| LSN | Txn ID | Operation | Table     | Old Value              | New Value                 | Prev LSN | Next LSN |
+| --- | ------ | --------- | --------- | ---------------------- | ------------------------- | -------- | -------- |
+| 100 | 500    | BEGIN     | -         | -                      | -                         | NULL     | 101      |
+| 101 | 500    | UPDATE    | Orders    | id-6: status='PENDING' | id-6: status='PROCESSING' | 100      | 102      |
+| 102 | 500    | UPDATE    | Inventory | SKU-12345: qty=150     | SKU-12345: qty=148        | 101      | 103      |
+| 103 | 500    | COMMIT    | -         | -                      | -                         | 102      | NULL     |
 
 ---
 
@@ -218,6 +257,8 @@ The transaction log is stored separately from database files.
 3. Inconsistent retrievals
 
 ---
+
+<!-- _class: compact -->
 
 ## Problem 1: Lost Updates
 
