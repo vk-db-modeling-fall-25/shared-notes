@@ -96,6 +96,12 @@ header: 'MapReduce &nbsp;&nbsp;|&nbsp;&nbsp; Distributed Systems &nbsp;&nbsp;|&n
 - Count word frequencies across all plays
 - Requires significant implementation effort
 
+---
+
+![w:800px](<../media/Screenshot 2025-11-28 at 3.01.42 PM.png>)
+
+---
+
 **Question:** Can MapReduce simplify this?
 
 **Answer:** Yes! Dramatically!
