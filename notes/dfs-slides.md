@@ -13,8 +13,6 @@ header: 'Distributed File Systems &nbsp;&nbsp;|&nbsp;&nbsp; Database Modeling & 
 
 ## Big Data Storage Requirements
 
-**The 4 V's:**
-
 - **Volume**: Large capacity + low cost per byte
 - **Velocity**: Efficient streaming reads/writes ("batch" vs "point" access)
 - **Variety**: Store unstructured/semi-structured data
@@ -51,7 +49,6 @@ Single machine with CPU/RAM and attached storage
 
 ## Distributed File System Architecture
 
-**Key idea:** Separate data storage from metadata management
 
 ![width:700px](../media/dfs.excalidraw.png)
 
