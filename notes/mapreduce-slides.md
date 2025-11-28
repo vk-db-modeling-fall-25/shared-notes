@@ -222,6 +222,8 @@ the: 2, quick: 1, brown: 1, fox: 1, lazy: 1, dog: 1
 
 ## MapReduce Playground
 
+[Example Code](/java/src/mapreduce/examples/wordcount/Main.java)
+
 **Available for experimentation:**
 - Java-based MapReduce framework
 - Runs on a single machine
